@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ecd3d3;
+}
+
+h2{
+    text-align: center;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgb(211, 238, 243);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(208, 16, 16, 0.1);
+}
+.container2{
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgb(248, 239, 232);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(208, 16, 16, 0.1);
+}
+
+#editor,
+#blog {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input,
+textarea {
+    width: 98%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: rgb(62, 9, 9);
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(46, 51, 58);
+}
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Content Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <div id="editor">
+        <h2>Blog Editor</h2>
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title">
+        </div>
+        <div>
+            <label for="content">Content:</label>
+            <textarea id="content"></textarea>
+        </div>
+        <div>
+            <label for="image">Image URL:</label>
+            <input type="text" id="image">
+        </div>
+        <div>
+            <label for="video">Video URL:</label>
+            <input type="text" id="video">
+        </div>
+        <button onclick="addBlogPost()">Add Blog Post</button>
+    </div>
+<div class="container2">
+    <div id="blog">
+        <h3>Blog</h3>
+        <div id="posts"></div>
+</div>    
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    loadBlogPosts();
+});
+
+function addBlogPost() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const image = document.getElementById('image').value;
+    const video = document.getElementById('video').value;
+
+    if (title && content) {
+        const post = {
+            title,
+            content,
+            image,
+            video
+        };
+
+        saveBlogPost(post);
+        loadBlogPosts();
+        clearForm();
+    } else {
+        alert('Title and Content are required!');
+    }
+}
+
+function saveBlogPost(post) {
+    let posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+    posts.push(post);
+    localStorage.setItem('blogPosts', JSON.stringify(posts));
+}
+
+function loadBlogPosts() {
+    const postsContainer = document.getElementById('posts');
+    const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+    postsContainer.innerHTML = '';
+
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('blog-post');
+        postElement.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            ${post.image ? `<img src="${post.image}" alt="Post Image">` : ''}
+            ${post.video ? `<iframe width="100%" height="315" src="${post.video}" frameborder="0" allowfullscreen></iframe>` : ''}
+        `;
+        postsContainer.appendChild(postElement);
+    });
+}
+
+function clearForm() {
+    document.getElementById('title').value = '';
+    document.getElementById('content').value = '';
+    document.getElementById('image').value = '';
+    document.getElementById('video').value = '';
+}
+
+</script>
+
+<script src="scripts.js"></script>
+</body>
+</html>

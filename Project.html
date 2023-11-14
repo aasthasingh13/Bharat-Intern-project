@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #c8ddf3;
+    color: rgb(7, 12, 81);
+    text-align: center;
+    padding: 1em;
+}
+
+main {
+    max-width: 888px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #c8ddf3;
+    border-radius: 5px;
+}
+
+#post-form,
+#task-form {
+    margin-bottom: 20px;
+}
+
+label, textarea, input, button {
+    display: block;
+    margin-bottom: 90px;
+}
+
+button {
+    background-color: rgb(7, 12, 81);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+#posts {
+    margin-top: 10px;
+}
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Social Media Platform</title>
+</head>
+<body>
+    <header>
+        <h1>Social Media Platform</h1>
+    </header>
+    <main>
+        <section id="post-form">
+            <label for="postContent">Create a Post:</label>
+            <textarea id="postContent" placeholder="Share something..."></textarea>
+
+            <button onclick="submitPost()">Post</button>
+        </section>
+
+        <section id="posts">
+            <!-- Posts will be displayed here -->
+        </section>
+
+        <section id="task-form">
+            <label for="taskContent">Assign a Task:</label>
+            <textarea id="taskContent" placeholder="Describe the task..."></textarea>
+
+            <label for="assignee">Assign to:</label>
+            <input type="text" id="assignee" placeholder="Username">
+
+            <button onclick="assignTask()">Assign Task</button>
+        </section>
+    </main>
+    <script>
+        // Sample data for testing
+const posts = [];
+const tasks = [];
+
+// Function to display posts
+function displayPosts() {
+    const postsSection = $('#posts');
+    postsSection.empty();
+
+    posts.forEach(post => {
+        const postDiv = $('<div class="post">');
+        postDiv.append(`<p>${post.content}</p>`);
+        postsSection.append(postDiv);
+    });
+}
+
+// Function to display tasks
+function displayTasks() {
+    const taskSection = $('#tasks');
+    taskSection.empty();
+
+    tasks.forEach(task => {
+        const taskDiv = $('<div class="task">');
+        taskDiv.append(`<p>${task.content} - Assigned to: ${task.assignee}</p>`);
+        taskSection.append(taskDiv);
+    });
+}
+
+// Function to submit a new post
+function submitPost() {
+    const postContent = $('#postContent').val();
+
+    if (postContent) {
+        const newPost = { content: postContent };
+        posts.push(newPost);
+        displayPosts();
+    }
+}
+
+// Function to assign a new task
+function assignTask() {
+    const taskContent = $('#taskContent').val();
+    const assignee = $('#assignee').val();
+
+    if (taskContent && assignee) {
+        const newTask = { content: taskContent, assignee: assignee };
+        tasks.push(newTask);
+        displayTasks();
+    }
+}
+
+// Initial display of posts and tasks
+$(document).ready(() => {
+    displayPosts();
+    displayTasks();
+});
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
